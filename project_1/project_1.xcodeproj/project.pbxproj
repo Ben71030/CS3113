@@ -43,8 +43,8 @@
 		6CB21D762B80582D001AD8BB /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = "../../../Downloads/XcodeFrameworks 7/SDL2.framework"; sourceTree = "<group>"; };
 		6CB21D772B80582D001AD8BB /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = "../../../Downloads/XcodeFrameworks 7/SDL2_image.framework"; sourceTree = "<group>"; };
 		6CB21D782B80582D001AD8BB /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = "../../../Downloads/XcodeFrameworks 7/SDL2_mixer.framework"; sourceTree = "<group>"; };
-		6CB21D7D2B805963001AD8BB /* soph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soph.png; sourceTree = "<group>"; };
-		6CB21D7E2B805963001AD8BB /* flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flag.png; sourceTree = "<group>"; };
+		6CB21D7F2B812C1A001AD8BB /* basketball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basketball.png; sourceTree = "<group>"; };
+		6CB21D812B812DEA001AD8BB /* knicks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = knicks.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +83,8 @@
 		6CB21D632B805754001AD8BB /* project_1 */ = {
 			isa = PBXGroup;
 			children = (
-				6CB21D7E2B805963001AD8BB /* flag.png */,
-				6CB21D7D2B805963001AD8BB /* soph.png */,
+				6CB21D7F2B812C1A001AD8BB /* basketball.png */,
+				6CB21D812B812DEA001AD8BB /* knicks.png */,
 				6CB21D642B805754001AD8BB /* main.cpp */,
 				6CB21D6E2B80579A001AD8BB /* glm */,
 				6CB21D6F2B80579A001AD8BB /* ShaderProgram.cpp */,
