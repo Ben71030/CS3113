@@ -8,6 +8,7 @@
 * Academic Misconduct.
 **/
 
+
 #define GL_SILENCE_DEPRECATION
 #define GL_GLEXT_PROTOTYPES 1
 #define STB_IMAGE_IMPLEMENTATION
@@ -24,8 +25,8 @@
 #include "ShaderProgram.h"
 #include "stb_image.h"
 
-const int WINDOW_WIDTH  = 640*2,
-          WINDOW_HEIGHT = 480*2;
+const int WINDOW_WIDTH  = 640,
+          WINDOW_HEIGHT = 480;
 
 const float BG_RED     = 255.0f,
             BG_BLUE    = 255.0f,
@@ -39,8 +40,8 @@ const int VIEWPORT_X      = 0,
 
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl",
            F_SHADER_PATH[] = "shaders/fragment_textured.glsl",
-           FLAG_PATH[] = "flag.png",
-           SOPHIE_PATH[] = "soph.png";
+           KNICKS_PATH[] = "knicks.png",
+           BASKETBALL_PATH[] = "basketball.png";
 
 const int TRIANGLE_RED     = 1.0,
           TRIANGLE_BLUE    = 0.4,
@@ -65,13 +66,13 @@ glm::mat4 g_view_matrix,
           g_projection_matrix,
           g_trans_matrix;
 
-float g_triangle_x      = 0.0f, g_triangle_x2 = 0.0f;
+float g_triangle_x      = 0.0f, g_triangle2_y = 0.0f;
 float g_triangle_rotate = 0.0f;
 float g_previous_ticks  = 0.0f;
 
 
-GLuint g_sophie_texture_id;
-GLuint g_flag_texture_id; //NEW
+GLuint g_basketball_texture_id;
+GLuint g_knicks_texture_id;
 
 GLuint load_texture(const char* filepath)
 {
@@ -103,7 +104,7 @@ GLuint load_texture(const char* filepath)
 }
 
 
-void initialise()
+void initialize()
 {
     SDL_Init(SDL_INIT_VIDEO);
     g_display_window = SDL_CreateWindow("Project 1: Simple 2D Scene",
@@ -122,8 +123,8 @@ void initialise()
 
     g_program.load(V_SHADER_PATH, F_SHADER_PATH);
 
-    g_sophie_texture_id = load_texture(SOPHIE_PATH);
-    g_flag_texture_id = load_texture(FLAG_PATH); //NEW
+    g_basketball_texture_id = load_texture(BASKETBALL_PATH);
+    g_knicks_texture_id = load_texture(KNICKS_PATH);
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -161,23 +162,22 @@ void update()
     g_previous_ticks = ticks;
 
     g_triangle_x += 1.0f * delta_time;
-    g_triangle_x2 += 1.0f * delta_time;
+    g_triangle2_y += 1.0f * delta_time;
     g_triangle_rotate += DEGREES_PER_SECOND * delta_time;
     g_model_matrix = glm::mat4(1.0f);
     g_model_matrix_2 = glm::mat4(1.0f);
 
 
 //  Object 1
-    g_model_matrix = glm::translate(g_model_matrix, glm::vec3(g_triangle_x/10, 0.0f, 0.0f));
+    g_model_matrix = glm::translate(g_model_matrix, glm::vec3(g_triangle_x/2, 0.0f, 0.0f));
     g_model_matrix = glm::rotate(g_model_matrix, glm::radians(g_triangle_rotate), glm::vec3(0.0f, 0.0f, 1.0f));
 // Object 2
-    g_model_matrix_2 = glm::translate(g_model_matrix, glm::vec3(0.0f, g_triangle_x2/10, 0.0f));
+    g_model_matrix_2 = glm::translate(g_model_matrix, glm::vec3(0.0f, g_triangle2_y/2, 0.0f));
 }
 
 void render() {
     glClear(GL_COLOR_BUFFER_BIT);
     
-// Object 1:
     float vertices[] =
     {
         -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f,  // triangle 1
@@ -187,7 +187,6 @@ void render() {
     glVertexAttribPointer(g_program.get_position_attribute(), 2, GL_FLOAT, false, 0, vertices);
     glEnableVertexAttribArray(g_program.get_position_attribute());
 
-    // Textures
     float texture_coordinates[] =
     {
         0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,     // triangle 1
@@ -199,12 +198,12 @@ void render() {
 // Object 1:
     g_program.set_model_matrix(g_model_matrix);
     
-    glBindTexture(GL_TEXTURE_2D, g_sophie_texture_id);
+    glBindTexture(GL_TEXTURE_2D, g_basketball_texture_id);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 // Object 2:
     g_program.set_model_matrix(g_model_matrix_2);
     
-    glBindTexture(GL_TEXTURE_2D, g_flag_texture_id);
+    glBindTexture(GL_TEXTURE_2D, g_knicks_texture_id);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
 
@@ -219,7 +218,7 @@ void shutdown() { SDL_Quit(); }
 
 int main(int argc, char* argv[])
 {
-    initialise();
+    initialize();
 
     while (g_game_is_running)
     {
