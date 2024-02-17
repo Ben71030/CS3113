@@ -50,9 +50,9 @@ const int TRIANGLE_RED     = 1.0,
 const float MILLISECONDS_IN_SECOND = 1000.0;
 const float DEGREES_PER_SECOND     = 90.0f;
 
-const int NUMBER_OF_TEXTURES = 1; // to be generated, that is
-const GLint LEVEL_OF_DETAIL  = 0; // base image level; Level n is the nth mipmap reduction image
-const GLint TEXTURE_BORDER   = 0; // this value MUST be zero
+const int NUMBER_OF_TEXTURES = 1;
+const GLint LEVEL_OF_DETAIL  = 0;
+const GLint TEXTURE_BORDER   = 0;
 
 SDL_Window* g_display_window;
 
@@ -128,13 +128,12 @@ void initialise()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    g_view_matrix = glm::mat4(1.0f);  // Defines the position (location and orientation) of the camera
-    g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);  // Defines the characteristics of your camera, such as clip planes, field of view, projection method etc.
+    g_view_matrix = glm::mat4(1.0f);
+    g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
     g_trans_matrix = g_model_matrix;
     
     g_program.set_projection_matrix(g_projection_matrix);
     g_program.set_view_matrix(g_view_matrix);
-    // Notice we haven't set our model matrix yet!
 
     g_program.set_colour(TRIANGLE_RED, TRIANGLE_BLUE, TRIANGLE_GREEN, TRIANGLE_OPACITY);
 
@@ -157,13 +156,13 @@ void process_input()
 
 void update()
 {
-    float ticks = (float) SDL_GetTicks() / MILLISECONDS_IN_SECOND; // get the current number of ticks
-    float delta_time = ticks - g_previous_ticks; // the delta time is the difference from the last frame
+    float ticks = (float) SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+    float delta_time = ticks - g_previous_ticks;
     g_previous_ticks = ticks;
 
     g_triangle_x += 1.0f * delta_time;
-    g_triangle_x2 += 1.0f * delta_time; //NEW
-    g_triangle_rotate += DEGREES_PER_SECOND * delta_time; // 90-degrees per second
+    g_triangle_x2 += 1.0f * delta_time;
+    g_triangle_rotate += DEGREES_PER_SECOND * delta_time;
     g_model_matrix = glm::mat4(1.0f);
     g_model_matrix_2 = glm::mat4(1.0f);
 
@@ -211,26 +210,7 @@ void render() {
 
     glDisableVertexAttribArray(g_program.get_position_attribute());
     glDisableVertexAttribArray(g_program.get_tex_coordinate_attribute());
-    
-//// Object 2:
-//
-//    glVertexAttribPointer(g_program.get_position_attribute(), 2, GL_FLOAT, false, 0, vertices);
-//    glEnableVertexAttribArray(g_program.get_position_attribute());
-//
-//    glVertexAttribPointer(g_program.get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, texture_coordinates);
-//    glEnableVertexAttribArray(g_program.get_tex_coordinate_attribute());
-//
-//    g_program.set_model_matrix(g_model_matrix_2);
-//
-//    glBindTexture(GL_TEXTURE_2D, g_flag_texture_id);
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-//
-//
-//    glDisableVertexAttribArray(g_program.get_position_attribute());
-//    glDisableVertexAttribArray(g_program.get_tex_coordinate_attribute());
 
-    
-    
     SDL_GL_SwapWindow(g_display_window);
 }
 
