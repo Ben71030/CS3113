@@ -137,7 +137,7 @@ void initialise()
     glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
     g_shader_program.load(V_SHADER_PATH, F_SHADER_PATH);
-    
+
     g_left_paddle_model_matrix = glm::mat4(1.0f);
     g_right_paddle_model_matrix = glm::mat4(1.0f);
     g_ball_model_matrix = glm::mat4(1.0f);
@@ -149,7 +149,7 @@ void initialise()
     g_ball_texture_id = load_texture(BALL_SPRITE_FILEPATH);
     g_paddle_texture_id = load_texture(PADDLE_SPRITE_FILEPATH);
     g_text_texture_id = load_texture(FONT_SPRITE_FILEPATH);
-    
+
     g_shader_program.set_projection_matrix(g_projection_matrix);
     g_shader_program.set_view_matrix(g_view_matrix);
 
@@ -183,7 +183,7 @@ void draw_text(ShaderProgram *program, GLuint font_texture_id, std::string text,
         //    relative to the whole sentence)
         int spritesheet_index = (int) text[i];  // ascii value of character
         float offset = (screen_size + spacing) * i;
-        
+
         // 2. Using the spritesheet index, we can calculate our U- and V-coordinates
         float u_coordinate = (float) (spritesheet_index % FONTBANK_SIZE) / FONTBANK_SIZE;
         float v_coordinate = (float) (spritesheet_index / FONTBANK_SIZE) / FONTBANK_SIZE;
@@ -211,18 +211,18 @@ void draw_text(ShaderProgram *program, GLuint font_texture_id, std::string text,
     // 4. And render all of them using the pairs
     glm::mat4 model_matrix = glm::mat4(1.0f);
     model_matrix = glm::translate(model_matrix, position);
-    
+
     g_shader_program.set_model_matrix(model_matrix);
     glUseProgram(g_shader_program.get_program_id());
-    
+
     glVertexAttribPointer(g_shader_program.get_position_attribute(), 2, GL_FLOAT, false, 0, vertices.data());
     glEnableVertexAttribArray(g_shader_program.get_position_attribute());
     glVertexAttribPointer(g_shader_program.get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, texture_coordinates.data());
     glEnableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
-    
+
     glBindTexture(GL_TEXTURE_2D, font_texture_id);
     glDrawArrays(GL_TRIANGLES, 0, (int) (text.size() * 6));
-    
+
     glDisableVertexAttribArray(g_shader_program.get_position_attribute());
     glDisableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
 }
@@ -303,8 +303,8 @@ void update()
     float ticks = (float) SDL_GetTicks() / MILLISECONDS_IN_SECOND;
     float delta_time = ticks - g_previous_ticks;
     g_previous_ticks = ticks;
-    
-    
+
+
     if (!g_left_paddle_player_controlled){
         g_left_paddle_movement = g_recent_left_paddle_movement;
         if (g_left_paddle_position.y < -3.75){
@@ -316,7 +316,7 @@ void update()
             g_recent_left_paddle_movement = g_left_paddle_movement;
         }
     }
- 
+
     // Update paddle positions
     g_left_paddle_position += g_left_paddle_movement * g_left_paddle_speed * delta_time;
     g_right_paddle_position += g_right_paddle_movement * g_right_paddle_speed * delta_time;
@@ -347,7 +347,7 @@ void update()
     // Left Paddle and Ball Cullusion Handling
     x_distance = fabs(g_left_paddle_position.x - g_ball_position.x) - ((1 + 1) / 2.0f);
     y_distance = fabs(g_left_paddle_position.y - g_ball_position.y) - ((1 + 1.5) / 2.0f);
-    
+
     if (x_distance < 0 && y_distance < 0){
         if (g_ball_movement == glm::vec3(-0.3f, -0.3f, 0.0f)){
             g_ball_movement = glm::vec3(0.3f, -0.3f, 0.0f);
@@ -355,7 +355,7 @@ void update()
             g_ball_movement = glm::vec3(0.3f, 0.3f, 0.0f);
         }
     }
-    
+
 // ---- Below gives the ability for the ball to bounce off the top and bottom of the screen, by updating the movement direction of the ball
     if (g_ball_position.y > 3.75 && g_ball_movement == glm::vec3(-0.3f, 0.3f, 0.0f)){
         g_ball_movement = glm::vec3(-0.3f, -0.3f, 0.0f);
@@ -375,8 +375,8 @@ void update()
 //        g_game_over = true;
         g_game_is_running = false;
     }
-    
-    
+
+
 }
 
 
@@ -406,7 +406,7 @@ void render()
 
     glVertexAttribPointer(g_shader_program.get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, texture_coordinates);
     glEnableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
-    
+
     // Left Paddle Object
 //    g_shader_program.set_model_matrix(g_left_paddle_model_matrix);
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -419,14 +419,14 @@ void render()
 //    g_shader_program.set_model_matrix(g_ball_model_matrix);
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
     draw_object(g_ball_model_matrix, g_ball_texture_id);
-    
-    
+
+
 //    g_shader_program.set_model_matrix(g_model_matrix);
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
 //
 //    draw_object(g_model_matrix, g_player_texture_id);
 //    draw_object(g_other_model_matrix, g_other_texture_id);
-    
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -453,7 +453,7 @@ int main(int argc, char* argv[])
             if (g_left_paddle_won){
                 draw_text(&g_shader_program, g_text_texture_id, std::string("Game Over: Left Paddle WON!"), 0.25f, 0.0f, glm::vec3(-1.25f, 2.0f, 0.0f));
                 render();
-                
+
             }
         }
     }
@@ -461,3 +461,4 @@ int main(int argc, char* argv[])
     shutdown();
     return 0;
 }
+
