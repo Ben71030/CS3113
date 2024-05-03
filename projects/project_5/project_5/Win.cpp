@@ -69,10 +69,8 @@ void Win::update(float delta_time) {
 
 void Win::render(ShaderProgram *program) {
     GLuint font_texture_id = Utility::load_texture("font1.png");
-    Utility::draw_text(program, font_texture_id, "wow", 0.4f, 0.1f, glm::vec3(1.5, 10, 0));
-    Utility::draw_text(program, font_texture_id, "wow", 0.4f, 0.1f, glm::vec3(3.5, 5, 0));
-    Utility::draw_text(program, font_texture_id, "wow!", 0.4f, 0.1f, glm::vec3(2.5, 0, 0));
-    Utility::draw_text(program, font_texture_id, "You Win!", 0.4f, 0.1f, glm::vec3(2.0, -10, 0));
+    Utility::draw_text(program, font_texture_id, "Survived", 0.4f, 0.1f, glm::vec3(2.5, -2, 0));
+    Utility::draw_text(program, font_texture_id, "You Win!", 0.4f, 0.1f, glm::vec3(3.0, -4, 0));
         
     m_state.map->render(program);
     m_state.player->render(program);

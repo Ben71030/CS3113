@@ -23,7 +23,7 @@ Entity::Entity()
     m_speed = 0;
     m_model_matrix = glm::mat4(1.0f);
     
-    m_lives = 3;
+    m_lives = 2;
 }
 
 Entity::~Entity()
@@ -95,16 +95,26 @@ void Entity::ai_guard(Entity* player)
 {
     switch (m_ai_state) {
     case IDLE:
-        if (glm::distance(m_position, player->get_position()) < 3.0f) m_ai_state = WALKING;
+        if (glm::distance(m_position, player->get_position()) < 10.0f) m_ai_state = WALKING;
         break;
 
     case WALKING:
+        std::cout << "Walking" << std::endl;
         if (m_position.x > player->get_position().x) {
             m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
         }
-        else {
+        if (m_position.x < player->get_position().x) {
             m_movement = glm::vec3(1.0f, 0.0f, 0.0f);
         }
+        if (m_position.y > player->get_position().y) {
+            m_movement = glm::vec3(0.0f, -1.0f, 0.0f);
+        }
+        if (m_position.y < player->get_position().y) {
+            m_movement = glm::vec3(0.0f, 1.0f, 0.0f);
+        }
+//        else {
+//            m_movement = glm::vec3(0.0f, 1.0f, 0.0f);
+//        }
         break;
 
     case ATTACKING:
@@ -148,7 +158,8 @@ void Entity::update(float delta_time, Entity* player, Entity* objects, int objec
     }
 
     m_velocity.x = m_movement.x * m_speed;
-    m_velocity += m_acceleration * delta_time;
+    m_velocity.y = m_movement.y * m_speed;
+//    m_velocity += m_acceleration * delta_time;
 
     m_position.y += m_velocity.y * delta_time;
     check_collision_y(objects, object_count);

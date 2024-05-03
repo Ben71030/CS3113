@@ -68,7 +68,7 @@ void Third_Level::initialize() {
     
     m_state.enemies = new Entity[THIRD_LEVEL_ENEMY_COUNT];
     
-    GLuint enemy_texture_id = Utility::load_texture("ai.png");;
+    GLuint enemy_texture_id = Utility::load_texture("zombie.jpeg");;
 
     for (int i = 0; i < THIRD_LEVEL_ENEMY_COUNT; i++) {
         m_state.enemies[i].set_entity_type(ENEMY);

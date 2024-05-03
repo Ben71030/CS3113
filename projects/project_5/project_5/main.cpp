@@ -35,9 +35,9 @@
 const int WINDOW_WIDTH  = 640,
           WINDOW_HEIGHT = 480;
 
-const float BG_RED     = 124.0f,
-            BG_BLUE    = 252.0f,
-            BG_GREEN   = 0.0f,
+const float BG_RED     = 0.0f,
+            BG_BLUE    = 0.0f,
+            BG_GREEN   = 255.0f,
             BG_OPACITY = 1.0f;
 
 const int VIEWPORT_X = 0,
@@ -59,6 +59,8 @@ glm::mat4 g_view_matrix, g_model_matrix, g_projection_matrix;
 Scene *g_current_scene;
 Scene *g_scenes[6];
 
+extern float g_timer;
+
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
@@ -79,6 +81,7 @@ void switch_to_scene(int the_next_scene, int num_of_lives = 3){
     g_current_scene -> initialize();
 }
 
+
 void initialise()
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -86,35 +89,35 @@ void initialise()
                                       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                       WINDOW_WIDTH, WINDOW_HEIGHT,
                                       SDL_WINDOW_OPENGL);
-    
+
     SDL_GLContext context = SDL_GL_CreateContext(g_display_window);
     SDL_GL_MakeCurrent(g_display_window, context);
-    
+
 #ifdef _WINDOWS
     glewInit();
 #endif
-    
+
     glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
     g_shader_program.load(V_SHADER_PATH, F_SHADER_PATH);
 
     g_view_matrix = glm::mat4(1.0f);
     g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
-    
+
     g_shader_program.set_projection_matrix(g_projection_matrix);
     g_shader_program.set_view_matrix(g_view_matrix);
-    
+
     glUseProgram(g_shader_program.get_program_id());
-    
+
     glClearColor(BG_RED, BG_BLUE, BG_GREEN, BG_OPACITY);
-    
+
     g_scenes[0] = new Menu();
-    g_scenes[1] = new First_Level(3);
-    g_scenes[2] = new Second_Level(3);
-    g_scenes[3] = new Third_Level(3);
+    g_scenes[1] = new First_Level(2);
+//    g_scenes[2] = new Second_Level(3);
+//    g_scenes[3] = new Third_Level(3);
     g_scenes[4] = new Win();
     g_scenes[5] = new Lose();
     switch_to_scene(0);
-    
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -138,6 +141,12 @@ void process_input()
                 case SDLK_q:
                     g_game_is_running  = false;
                     break;
+                    
+                case SDLK_UP:
+                    break;
+                
+                case SDLK_DOWN:
+                    break;
                         
                 case SDLK_LEFT:
                     break;
@@ -146,7 +155,7 @@ void process_input()
                     break;
                 
                 case SDLK_RETURN:
-                    g_current_scene->m_state.player_lives = 3;
+                    g_current_scene->m_state.player_lives = 2;
                     switch_to_scene(1);
                     break;
 
@@ -172,10 +181,19 @@ void process_input()
         g_current_scene->m_state.player->move_left();
         g_current_scene->m_state.player->m_animation_indices = g_current_scene->m_state.player->m_walking[g_current_scene->m_state.player->LEFT];
     }
-    else if (key_state[SDL_SCANCODE_RIGHT])
+    if (key_state[SDL_SCANCODE_RIGHT])
     {
         g_current_scene->m_state.player->move_right();
         g_current_scene->m_state.player->m_animation_indices = g_current_scene->m_state.player->m_walking[g_current_scene->m_state.player->RIGHT];
+    }
+    if (key_state[SDL_SCANCODE_UP])
+    {
+        g_current_scene->m_state.player->move_up();
+        g_current_scene->m_state.player->m_animation_indices = g_current_scene->m_state.player->m_walking[g_current_scene->m_state.player->UP];
+    }if (key_state[SDL_SCANCODE_DOWN])
+    {
+        g_current_scene->m_state.player->move_down();
+        g_current_scene->m_state.player->m_animation_indices = g_current_scene->m_state.player->m_walking[g_current_scene->m_state.player->DOWN];
     }
     else if (key_state[SDL_SCANCODE_RETURN]){
         g_current_scene->m_state.player_lives = 3;
@@ -208,12 +226,21 @@ void update()
         delta_time -= FIXED_TIMESTEP;
     }
     
+    g_timer -= delta_time;
+
+    // Check if time is up
+    if (g_timer <= 0.0f) {
+        // Do something when time is up
+        std::cout << "Time's up!" << std::endl;
+        switch_to_scene(4);
+    }
+    
     g_accumulator = delta_time;
     
     
     g_view_matrix = glm::mat4(1.0f);
     
-    if (g_current_scene->m_state.player->get_position().y > -12.5) {
+    if (g_current_scene->m_state.player->get_position().y > -22.5) {
             if (g_current_scene->m_state.player->get_position().x > 5) {
                 if (g_current_scene->m_state.player->get_position().x > 12) {
                     if (g_current_scene->m_state.player->get_position().y > -2) {
@@ -257,7 +284,12 @@ void update()
         
         std::cout << "(" << g_current_scene->m_state.player->get_position().x
             << ", " << g_current_scene->m_state.player->get_position().y;
-        std::cout << ")\n";}
+        std::cout << ")\n";
+    
+
+}
+
+
 
 
 void render()
@@ -269,6 +301,7 @@ void render()
     g_current_scene->render(&g_shader_program);
     
     SDL_GL_SwapWindow(g_display_window);
+    
 }
 
 void shutdown()
@@ -285,10 +318,20 @@ int main(int argc, char* argv[])
         process_input();
         update();
         
+        std::cout << g_timer << std::endl;
+        
+        if (g_timer <= 0.0f){
+            switch_to_scene(4);
+        }
+        
         if (g_current_scene->m_state.next_scene >= 0){
-            if (g_current_scene->m_state.player_lives == 0){
+            if (g_current_scene->m_state.player_lives == 1){
                 switch_to_scene(5);
             }
+//            if (g_timer <= 0.0f){
+//                switch_to_scene(4);
+//            }
+//            if (g_current_scene->m_state.player)
             else{
                 switch_to_scene(g_current_scene->m_state.next_scene, g_current_scene->m_state.player_lives);
             }

@@ -76,7 +76,10 @@
 		6C69054C2BCB72A200DDEEC7 /* tileset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tileset.png; sourceTree = "<group>"; };
 		6C69054D2BCB733600DDEEC7 /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
 		6C69054E2BCB742200DDEEC7 /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
-		6C69054F2BCB8C2500DDEEC7 /* ai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ai.png; sourceTree = "<group>"; };
+		6C85C5FA2BE3E7FD00EEE000 /* ai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ai.png; sourceTree = "<group>"; };
+		6C85C5FB2BE3F4F200EEE000 /* zombie.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = zombie.jpeg; sourceTree = "<group>"; };
+		6C85C5FD2BE4211200EEE000 /* Hurt1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hurt1.png; sourceTree = "<group>"; };
+		6C85C6092BE4A04600EEE000 /* bush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bush.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +118,10 @@
 		6C6905102BCAECB400DDEEC7 /* project_5 */ = {
 			isa = PBXGroup;
 			children = (
-				6C69054F2BCB8C2500DDEEC7 /* ai.png */,
+				6C85C5FD2BE4211200EEE000 /* Hurt1.png */,
+				6C85C6092BE4A04600EEE000 /* bush.png */,
+				6C85C5FB2BE3F4F200EEE000 /* zombie.jpeg */,
+				6C85C5FA2BE3E7FD00EEE000 /* ai.png */,
 				6C69054E2BCB742200DDEEC7 /* george_0.png */,
 				6C69054D2BCB733600DDEEC7 /* font1.png */,
 				6C69054C2BCB72A200DDEEC7 /* tileset.png */,
